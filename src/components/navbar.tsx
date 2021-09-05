@@ -2,6 +2,7 @@ import React, { FC, useContext } from "react";
 import Logo from "img/logo.svg";
 import { AppContext } from "context";
 import { NavLink, useHistory } from "react-router-dom";
+import { PATHS } from "utils/constants";
 
 const NavBar: FC = () => {
   const history = useHistory();
@@ -19,7 +20,7 @@ const NavBar: FC = () => {
           src={Logo}
           alt=""
         />
-        {process?.env?.REACT_APP_NAME || "unnamed app"}
+        Book Portal
       </span>
       <button
         className="navbar-toggler"
@@ -34,18 +35,18 @@ const NavBar: FC = () => {
       </button>
       {loggedUser ? (
         <div id="navBarContent" className="collapse navbar-collapse">
-          <nav className="navbar-nav nav-justified nav-pills mx-auto">
-            <NavLink to="/page1" className="nav-link">
-              Page1
+          <nav className="navbar-nav nav-pills mx-auto">
+            <NavLink to={PATHS.ADMIN.USER_MAN} className="nav-link">
+              User Management
             </NavLink>
-            <NavLink to="/page2" className="nav-link">
-              Page2
+            <NavLink to={PATHS.ADMIN.AUTHOR_MAN} className="nav-link">
+              Author Management
             </NavLink>
-            <NavLink to="/page3" className="nav-link">
-              Page3
+            <NavLink to={PATHS.ADMIN.BOOK_MAN} className="nav-link">
+              Book Management
             </NavLink>
           </nav>
-          <div>
+          <div className="me-2">
             <span>{loggedUser?.name}</span>
             <button
               className="btn btn-danger ms-3"

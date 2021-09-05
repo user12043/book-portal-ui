@@ -6,48 +6,43 @@ import { Redirect, Route, Switch, useLocation } from "react-router";
 import Login from "views/login";
 import NavBar from "components/navbar";
 import Aside from "components/aside";
-import Page1 from "views/page1";
-import Page2 from "views/page2";
-import Page3 from "views/page3";
+import UserManagement from "views/user_management";
+import { PATHS } from "utils/constants";
 
 const App: FC = () => {
   const { appState } = useContext(AppContext);
   const { pathname } = useLocation();
   return (
-    <div className="h-100">
+    <div className="h-100 bg-dark bg-gradient">
       <header id="header">
         <NavBar />
       </header>
       <article id="article" className="pt-3">
-        <Switch>
-          {appState.loggedUser ? (
-            pathname === "/login" ? (
-              <Redirect to="/" />
+        <section className="container h-100">
+          <Switch>
+            {appState.loggedUser ? (
+              pathname === PATHS.LOGIN ? (
+                <Redirect to="/" />
+              ) : (
+                <>
+                  <Route path="/" exact>
+                    <h1>HOME</h1>
+                  </Route>
+                  <Route path={PATHS.ADMIN.USER_MAN}>
+                    <UserManagement />
+                  </Route>
+                </>
+              )
             ) : (
-              <div className="container">
-                <Route path="/" exact>
-                  <h1>HOME</h1>
-                </Route>
-                <Route path="/page1">
-                  <Page1 />
-                </Route>
-                <Route path="/page2">
-                  <Page2 />
-                </Route>
-                <Route path="/page3">
-                  <Page3 />
-                </Route>
-              </div>
-            )
-          ) : (
-            <Route path="/login">
-              <Login />
+              <Route path={PATHS.LOGIN}>
+                <Login />
+              </Route>
+            )}
+            <Route path="*">
+              <Redirect to={appState.loggedUser ? "/" : PATHS.LOGIN} />
             </Route>
-          )}
-          <Route path="*">
-            <Redirect to={appState.loggedUser ? "/" : "/login"} />
-          </Route>
-        </Switch>
+          </Switch>
+        </section>
       </article>
       <aside>{appState.loggedUser ? <Aside /> : null}</aside>
       <footer>

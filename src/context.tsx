@@ -1,22 +1,20 @@
-import { User } from "models";
+import { User } from "utils/models";
 import React, { FC, useReducer } from "react";
 
-type AppState = {
+interface AppState {
   version: string;
   loggedUser: User | null;
-};
+}
 
 const initialState: AppState = {
   version: process?.env?.REACT_APP_VERSION || "undefined-version",
   loggedUser: null
 };
 
-type AppDispatch = React.Dispatch<any>;
-
-type AppContextValue = {
+interface AppContextValue {
   appState: AppState;
-  appDispatch: AppDispatch;
-};
+  appDispatch: React.Dispatch<any>;
+}
 
 const initialAppContextValue = {
   appState: initialState,

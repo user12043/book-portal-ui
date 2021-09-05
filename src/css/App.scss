@@ -22,6 +22,11 @@ body {
     max-height: 20vh;
 }
 
+// Get in front of aside bar
+#header > nav {
+    z-index: 99;
+}
+
 #article {
     height: 80vh;
 }

@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { FC, useState } from "react";
 
-const Aside = () => {
+const Aside: FC = () => {
   const [collapsed, setCollapsed] = useState(false);
 
   const toggle = () => {
