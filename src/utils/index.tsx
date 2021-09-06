@@ -1,6 +1,10 @@
 import { API_ROOT } from "./constants";
 
-export const apiReq = (path: string, options?: RequestInit) => {
+interface MyRequestInit extends Omit<RequestInit, "body"> {
+  body?: Object;
+}
+
+export const apiReq = (path: string, options?: MyRequestInit) => {
   const handleFetchError = (response: Response) => {
     if (!response.ok) {
       return Promise.reject(response);
@@ -26,7 +30,10 @@ export const apiReq = (path: string, options?: RequestInit) => {
     options.body = JSON.stringify(options.body);
   }
 
-  return fetch(!path.startsWith("http") ? API_ROOT + path : path, options)
+  return fetch(
+    !path.startsWith("http") ? API_ROOT + path : path,
+    options as RequestInit
+  )
     .then(handleFetchError)
     .then(
       response => {
@@ -41,5 +48,6 @@ export const apiReq = (path: string, options?: RequestInit) => {
           status + (responseObject.message ? "\n" + responseObject.message : "")
         );
       }
-    );
+    )
+    .catch(error => alert(error));
 };
