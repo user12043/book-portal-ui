@@ -33,8 +33,10 @@ const UserManagement: FC = () => {
     });
   };
 
-  const change = (e: ChangeEvent<HTMLInputElement>) => {
-    const { name, value, type, checked } = e.currentTarget;
+  const change = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const { name, value, type } = e.currentTarget;
+    // @ts-ignore
+    const checked = e.currentTarget["checked"] || "";
     const key = name as keyof User;
     const isCheckbox = type === "checkbox";
     setEditingUser({
@@ -45,7 +47,19 @@ const UserManagement: FC = () => {
 
   return (
     <section>
-      <h1>USER MANAGEMENT</h1>
+      <div className="row mb-3">
+        <h1 className="col col-11">USER MANAGEMENT</h1>
+        <button
+          className={`col ms-auto btn btn-outline-${
+            editingUser ? "danger" : "success"
+          } fs-3`}
+          onClick={() =>
+            editingUser ? setEditingUser(null) : setEditingUser({} as User)
+          }
+        >
+          <i className={`bi bi-${editingUser ? "x" : "plus"}-square`}></i>
+        </button>
+      </div>
       <table className="table table-dark table-striped table-hover text-center">
         <thead>
           <tr>
@@ -64,8 +78,9 @@ const UserManagement: FC = () => {
                 className="w-100"
                 type="text"
                 name="username"
-                value={editingUser?.username}
+                value={editingUser?.username || ""}
                 onChange={change}
+                autoFocus
               />
             </td>
             <td>
@@ -73,7 +88,7 @@ const UserManagement: FC = () => {
                 className="w-100"
                 type="password"
                 name="password"
-                value={editingUser?.password}
+                value={editingUser?.password || ""}
                 onChange={change}
               />
             </td>
@@ -82,7 +97,7 @@ const UserManagement: FC = () => {
                 className="w-100"
                 type="text"
                 name="name"
-                value={editingUser?.name}
+                value={editingUser?.name || ""}
                 onChange={change}
               />
             </td>
@@ -91,18 +106,29 @@ const UserManagement: FC = () => {
                 className="w-100"
                 type="email"
                 name="email"
-                value={editingUser?.email}
+                value={editingUser?.email || ""}
                 onChange={change}
               />
             </td>
             <td>
-              <input
+              <select
+                name="role"
+                className="form-select"
+                value={editingUser?.role}
+                onChange={change}
+              >
+                <option value="USER" defaultChecked>
+                  USER
+                </option>
+                <option value="ADMIN">ADMIN</option>
+              </select>
+              {/* <input
                 className="w-100"
                 type="text"
                 name="role"
                 value={editingUser?.role}
                 onChange={change}
-              />
+              /> */}
             </td>
             <td>
               <button
@@ -128,20 +154,22 @@ const UserManagement: FC = () => {
                   <td>{name}</td>
                   <td>{email}</td>
                   <td>{role}</td>
-                  <td className="d-flex justify-content-center">
-                    <button
-                      className="btn btn-outline-warning"
-                      onClick={() => setEditingUser(users[index])}
-                    >
-                      <i className="bi bi-pencil"></i>
-                    </button>
-                    <button
-                      className="btn btn-outline-danger ms-3"
-                      onClick={() => deleteUser(userId)}
-                      disabled={userId === 1}
-                    >
-                      <i className="bi bi-trash"></i>
-                    </button>
+                  <td>
+                    <div className="d-flex justify-content-around">
+                      <button
+                        className="btn btn-outline-warning"
+                        onClick={() => setEditingUser(users[index])}
+                      >
+                        <i className="bi bi-pencil"></i>
+                      </button>
+                      <button
+                        className="btn btn-outline-danger"
+                        onClick={() => userId && deleteUser(userId)}
+                        disabled={userId === 1}
+                      >
+                        <i className="bi bi-trash"></i>
+                      </button>
+                    </div>
                   </td>
                 </tr>
               );

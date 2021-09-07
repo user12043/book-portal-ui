@@ -1,18 +1,31 @@
-import React, { FC, useContext } from "react";
+import React, { ChangeEvent, FC, useContext, useState } from "react";
 import { AppContext } from "context";
+import { User } from "utils/models";
+import { apiReq } from "utils";
 
 const Login: FC = () => {
   const { appDispatch } = useContext(AppContext);
+  const [loginUser, setLoginUser] = useState<User | null>(null);
 
   const login = () => {
-    appDispatch({
-      type: "LOGIN",
-      payload: {
-        username: "testuser",
-        name: "Test User"
-      }
-    });
+    loginUser &&
+      apiReq("login", {
+        method: "POST",
+        body: loginUser
+      }).then(user =>
+        user
+          ? appDispatch({
+              type: "LOGIN",
+              payload: user
+            })
+          : alert("login failed")
+      );
   };
+
+  const change = ({
+    currentTarget: { name, value }
+  }: ChangeEvent<HTMLInputElement>) =>
+    setLoginUser({ ...loginUser, [name]: value } as User);
 
   return (
     <div className="row h-100 align-items-center px-2">
@@ -29,9 +42,12 @@ const Login: FC = () => {
           <input
             type="email"
             className="form-control"
-            id="username"
-            aria-describedby="usernameAddon"
+            name="email"
+            aria-describedby="emailAddon"
             placeholder="user@example.com"
+            value={loginUser?.email}
+            onChange={change}
+            required
           />
         </div>
         <div className="form-text fs-6 mb-3">
@@ -42,9 +58,12 @@ const Login: FC = () => {
           <input
             type="password"
             className="form-control"
-            id="password"
+            name="password"
             aria-describedby="passwordAddon"
             placeholder="****"
+            value={loginUser?.password}
+            onChange={change}
+            required
           />
         </div>
         <div className="mb-3 form-check fs-6">
