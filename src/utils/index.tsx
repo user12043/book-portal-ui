@@ -1,8 +1,17 @@
 import { API_ROOT } from "./constants";
+import { User } from "./models";
 
 interface MyRequestInit extends Omit<RequestInit, "body"> {
   body?: Object;
 }
+
+export const getLoggedUser = (): User | null => {
+  const record = localStorage.getItem("loggedUser");
+  return record ? JSON.parse(record) : null;
+};
+
+export const setLoggedUser = (user: User): void =>
+  localStorage.setItem("loggedUser", JSON.stringify(user));
 
 export const apiReq = (path: string, options?: MyRequestInit) => {
   const handleFetchError = (response: Response) => {

@@ -11,3 +11,8 @@ export const PATHS = {
     AUTHOR_MAN: ADMIN_PATH + "/author-management"
   }
 };
+
+export const ROLES = {
+  USER: "USER",
+  ADMIN: "ADMIN"
+};

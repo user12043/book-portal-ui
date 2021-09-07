@@ -3,6 +3,7 @@ import Logo from "img/logo.svg";
 import { AppContext } from "context";
 import { NavLink, useHistory } from "react-router-dom";
 import { PATHS } from "utils/constants";
+import Authorized from "./authorized";
 
 const NavBar: FC = () => {
   const history = useHistory();
@@ -13,7 +14,10 @@ const NavBar: FC = () => {
   } = useContext(AppContext);
   return (
     <nav className="navbar navbar-dark bg-dark navbar-expand-lg">
-      <span className="navbar-brand mb-0 h1" onClick={() => history.push("/")}>
+      <span
+        className="navbar-brand mb-0 h1 fs-4"
+        onClick={() => history.push("/")}
+      >
         <img
           id="navbarLogo"
           className="rounded d-inline-block align-text-center"
@@ -33,9 +37,10 @@ const NavBar: FC = () => {
       >
         <span className="navbar-toggler-icon" />
       </button>
-      {loggedUser ? (
-        <div id="navBarContent" className="collapse navbar-collapse">
-          <nav className="navbar-nav nav-pills mx-auto">
+
+      <div id="navBarContent" className="collapse navbar-collapse">
+        <nav className="navbar-nav nav-pills mx-auto">
+          <Authorized>
             <NavLink to={PATHS.ADMIN.USER_MAN} className="nav-link">
               User Management
             </NavLink>
@@ -45,18 +50,18 @@ const NavBar: FC = () => {
             <NavLink to={PATHS.ADMIN.BOOK_MAN} className="nav-link">
               Book Management
             </NavLink>
-          </nav>
-          <div className="me-2">
-            <span>{loggedUser?.name}</span>
-            <button
-              className="btn btn-danger ms-3"
-              onClick={() => appDispatch({ type: "LOGOUT" })}
-            >
-              <i className="bi bi-box-arrow-right"></i>
-            </button>
-          </div>
+          </Authorized>
+        </nav>
+        <div className="me-2">
+          <span>{loggedUser?.name}</span>
+          <button
+            className="btn btn-danger ms-3"
+            onClick={() => appDispatch({ type: "LOGOUT" })}
+          >
+            <i className="bi bi-box-arrow-right"></i>
+          </button>
         </div>
-      ) : null}
+      </div>
     </nav>
   );
 };

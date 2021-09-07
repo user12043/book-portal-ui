@@ -30,7 +30,7 @@ const UserManagement: FC = () => {
   const deleteUser = (userId: number) => {
     apiReq(`users/${userId}`, {
       method: "DELETE"
-    });
+    }).finally(() => fetchUsers());
   };
 
   const change = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -60,7 +60,10 @@ const UserManagement: FC = () => {
           <i className={`bi bi-${editingUser ? "x" : "plus"}-square`}></i>
         </button>
       </div>
-      <table className="table table-dark table-striped table-hover text-center">
+      <table
+        className="table table-dark table-striped table-hover text-center"
+        style={{ tableLayout: "fixed" }}
+      >
         <thead>
           <tr>
             <th>Username</th>
@@ -72,7 +75,7 @@ const UserManagement: FC = () => {
           </tr>
         </thead>
         <tbody>
-          <tr className={`bg-success ${editingUser ? "" : "d-none"}`}>
+          <tr className={`bg-success fs-5 ${editingUser ? "" : "d-none"}`}>
             <td>
               <input
                 className="w-100"
@@ -116,33 +119,30 @@ const UserManagement: FC = () => {
                 className="form-select"
                 value={editingUser?.role}
                 onChange={change}
+                required
               >
+                <option value="">-</option>
                 <option value="USER" defaultChecked>
                   USER
                 </option>
                 <option value="ADMIN">ADMIN</option>
               </select>
-              {/* <input
-                className="w-100"
-                type="text"
-                name="role"
-                value={editingUser?.role}
-                onChange={change}
-              /> */}
             </td>
             <td>
-              <button
-                className="btn btn-outline-success"
-                onClick={() => saveUser()}
-              >
-                <i className="bi bi-save"></i>
-              </button>
-              <button
-                className="btn btn-outline-danger ms-3"
-                onClick={() => setEditingUser(null)}
-              >
-                <i className="bi bi-x"></i>
-              </button>
+              <div className="d-flex justify-content-around">
+                <button
+                  className="btn btn-outline-success"
+                  onClick={() => saveUser()}
+                >
+                  <i className="bi bi-save"></i>
+                </button>
+                <button
+                  className="btn btn-outline-danger"
+                  onClick={() => setEditingUser(null)}
+                >
+                  <i className="bi bi-x"></i>
+                </button>
+              </div>
             </td>
           </tr>
           {users?.map(

@@ -8,6 +8,7 @@ import NavBar from "components/navbar";
 import Aside from "components/aside";
 import UserManagement from "views/user_management";
 import { PATHS } from "utils/constants";
+import Authorized from "components/authorized";
 
 const App: FC = () => {
   const { appState } = useContext(AppContext);
@@ -29,7 +30,9 @@ const App: FC = () => {
                     <h1>HOME</h1>
                   </Route>
                   <Route path={PATHS.ADMIN.USER_MAN}>
-                    <UserManagement />
+                    <Authorized>
+                      <UserManagement />
+                    </Authorized>
                   </Route>
                 </>
               )

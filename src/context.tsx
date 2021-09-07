@@ -1,5 +1,6 @@
 import { User } from "utils/models";
 import React, { FC, useReducer } from "react";
+import { getLoggedUser, setLoggedUser } from "utils";
 
 interface AppState {
   version: string;
@@ -8,11 +9,7 @@ interface AppState {
 
 const initialState: AppState = {
   version: process?.env?.REACT_APP_VERSION || "undefined-version",
-  loggedUser:
-    (localStorage.getItem("loggedUser") &&
-      // @ts-ignore
-      JSON.parse(localStorage.getItem("loggedUser"))) ||
-    null
+  loggedUser: getLoggedUser()
 };
 
 interface AppContextValue {
@@ -33,14 +30,14 @@ const appReducer = (state: AppState, action: any) => {
   const { payload } = action;
   switch (action.type) {
     case "LOGIN":
-      localStorage.setItem("loggedUser", JSON.stringify(payload));
+      setLoggedUser(payload);
       return {
         ...state,
         loggedUser: payload
       };
 
     case "LOGOUT":
-      localStorage.removeItem("loggedUser");
+      localStorage.clear();
       return {
         ...state,
         loggedUser: null
