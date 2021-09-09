@@ -1,4 +1,4 @@
-export const API_ROOT = "/api/";
+export const API_ROOT = process?.env?.API_URL || "/api/";
 
 export const ADMIN_PATH = "/admin";
 
