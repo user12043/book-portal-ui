@@ -1,4 +1,7 @@
-export const API_ROOT = process?.env?.API_URL || "/api/";
+export const API_ROOT =
+  process?.env?.NODE_ENV === "production"
+    ? "https://bookportal-api.herokuapp.com/api/"
+    : "/api/";
 
 export const ADMIN_PATH = "/admin";
 
