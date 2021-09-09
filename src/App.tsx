@@ -9,6 +9,8 @@ import Aside from "components/aside";
 import UserManagement from "views/user_management";
 import { PATHS } from "utils/constants";
 import Authorized from "components/authorized";
+import BookManagement from "views/book_management";
+import AuthorManagement from "views/author_management";
 
 const App: FC = () => {
   const { appState } = useContext(AppContext);
@@ -32,6 +34,16 @@ const App: FC = () => {
                   <Route path={PATHS.ADMIN.USER_MAN}>
                     <Authorized>
                       <UserManagement />
+                    </Authorized>
+                  </Route>
+                  <Route path={PATHS.ADMIN.AUTHOR_MAN}>
+                    <Authorized>
+                      <AuthorManagement />
+                    </Authorized>
+                  </Route>
+                  <Route path={PATHS.ADMIN.BOOK_MAN}>
+                    <Authorized>
+                      <BookManagement />
                     </Authorized>
                   </Route>
                 </>

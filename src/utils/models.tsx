@@ -6,3 +6,14 @@ export interface User {
   email?: string;
   role: string;
 }
+
+export interface Author {
+  authorId?: number;
+  name?: string;
+}
+
+export interface Book {
+  bookId?: number;
+  name?: string;
+  author?: Author;
+}
