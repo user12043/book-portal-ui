@@ -1,16 +1,32 @@
-import React, { ChangeEvent, FC, useEffect, useState } from "react";
+import React, {
+  ChangeEvent,
+  FC,
+  FormEventHandler,
+  useEffect,
+  useState
+} from "react";
 import { apiReq } from "utils";
 import { User } from "utils/models";
 
 const UserManagement: FC = () => {
   const [users, setUsers] = useState<Array<User>>([]);
   const [editingUser, setEditingUser] = useState<User | null>(null);
+  const [searchKeyWord, setSearchKeyWord] = useState<string | null>(null);
 
   const fetchUsers = () => {
     apiReq("users")
       .then(data => setUsers(data))
       .catch(error => alert(error));
     setEditingUser(null);
+  };
+
+  const search: FormEventHandler<HTMLFormElement> = e => {
+    e.preventDefault();
+    searchKeyWord
+      ? apiReq(
+          `users/findByName/${encodeURIComponent(searchKeyWord || "")}`
+        ).then(setUsers)
+      : fetchUsers();
   };
 
   useEffect(() => {
@@ -47,10 +63,18 @@ const UserManagement: FC = () => {
 
   return (
     <section>
-      <div className="row mb-3">
-        <h1 className="col col-11">USER MANAGEMENT</h1>
+      <h1>USER MANAGEMENT</h1>
+      <div className="row mb-3 align-items-center">
+        <form className="col col-4" onSubmit={search}>
+          <input
+            type="text"
+            className="form-control"
+            placeholder="Search user..."
+            onChange={({ currentTarget: { value } }) => setSearchKeyWord(value)}
+          />
+        </form>
         <button
-          className={`col ms-auto btn btn-outline-${
+          className={`col-1 ms-auto btn btn-outline-${
             editingUser ? "danger" : "success"
           } fs-3`}
           onClick={() =>

@@ -1,4 +1,10 @@
-import React, { ChangeEvent, FC, useEffect, useState } from "react";
+import React, {
+  ChangeEvent,
+  FC,
+  FormEventHandler,
+  useEffect,
+  useState
+} from "react";
 import { apiReq } from "utils";
 import { Author, Book } from "utils/models";
 
@@ -6,6 +12,7 @@ const BookManagement: FC = () => {
   const [books, setBooks] = useState<Array<Book>>([]);
   const [authors, setAuthors] = useState<Array<Author>>([]);
   const [editingBook, setEditingBook] = useState<Book | null>(null);
+  const [searchKeyWord, setSearchKeyWord] = useState<string | null>(null);
 
   const fetchBooks = () => {
     apiReq("books")
@@ -18,6 +25,15 @@ const BookManagement: FC = () => {
     apiReq("authors")
       .then(data => setAuthors(data))
       .catch(error => alert(error));
+  };
+
+  const search: FormEventHandler<HTMLFormElement> = e => {
+    e.preventDefault();
+    searchKeyWord
+      ? apiReq(
+          `books/findByName/${encodeURIComponent(searchKeyWord || "")}`
+        ).then(setBooks)
+      : fetchBooks();
   };
 
   useEffect(() => {
@@ -52,10 +68,18 @@ const BookManagement: FC = () => {
 
   return (
     <section>
-      <div className="row mb-3">
-        <h1 className="col col-11">BOOK MANAGEMENT</h1>
+      <h1>BOOK MANAGEMENT</h1>
+      <div className="row mb-3 align-items-center">
+        <form className="col col-4" onSubmit={search}>
+          <input
+            type="text"
+            className="form-control"
+            placeholder="Search user..."
+            onChange={({ currentTarget: { value } }) => setSearchKeyWord(value)}
+          />
+        </form>
         <button
-          className={`col ms-auto btn btn-outline-${
+          className={`col-1 ms-auto btn btn-outline-${
             editingBook ? "danger" : "success"
           } fs-3`}
           onClick={() =>

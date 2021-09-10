@@ -11,6 +11,7 @@ import { PATHS } from "utils/constants";
 import Authorized from "components/authorized";
 import BookManagement from "views/book_management";
 import AuthorManagement from "views/author_management";
+import Home from "views/home";
 
 const App: FC = () => {
   const { appState } = useContext(AppContext);
@@ -29,7 +30,7 @@ const App: FC = () => {
               ) : (
                 <>
                   <Route path="/" exact>
-                    <h1>HOME</h1>
+                    <Home />
                   </Route>
                   <Route path={PATHS.ADMIN.USER_MAN}>
                     <Authorized>
