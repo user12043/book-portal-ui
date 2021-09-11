@@ -39,8 +39,8 @@ const NavBar: FC = () => {
       </button>
 
       <div id="navBarContent" className="collapse navbar-collapse">
-        <nav className="navbar-nav nav-pills mx-auto">
-          <Authorized>
+        <Authorized>
+          <nav className="navbar-nav nav-pills mx-auto">
             <NavLink to={PATHS.ADMIN.USER_MAN} className="nav-link">
               User Management
             </NavLink>
@@ -50,17 +50,17 @@ const NavBar: FC = () => {
             <NavLink to={PATHS.ADMIN.BOOK_MAN} className="nav-link">
               Book Management
             </NavLink>
-          </Authorized>
-        </nav>
-        <div className="me-2">
-          <span>{loggedUser?.name}</span>
-          <button
-            className="btn btn-danger ms-3"
-            onClick={() => appDispatch({ type: "LOGOUT" })}
-          >
-            <i className="bi bi-box-arrow-right"></i>
-          </button>
-        </div>
+          </nav>
+          <div className="me-2">
+            <span>{loggedUser?.name}</span>
+            <button
+              className="btn btn-danger ms-3"
+              onClick={() => appDispatch({ type: "LOGOUT" })}
+            >
+              <i className="bi bi-box-arrow-right"></i>
+            </button>
+          </div>
+        </Authorized>
       </div>
     </nav>
   );

@@ -74,7 +74,7 @@ const BookManagement: FC = () => {
           <input
             type="text"
             className="form-control"
-            placeholder="Search user..."
+            placeholder="Search book..."
             onChange={({ currentTarget: { value } }) => setSearchKeyWord(value)}
           />
         </form>
