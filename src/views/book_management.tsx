@@ -125,7 +125,7 @@ const BookManagement: FC = () => {
                 }
               >
                 <option value="">-</option>
-                {authors.map(({ authorId, name }) => (
+                {authors?.map(({ authorId, name }) => (
                   <option key={authorId} value={authorId}>
                     {name}
                   </option>

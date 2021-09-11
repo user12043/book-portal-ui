@@ -35,7 +35,7 @@ const Home: FC = () => {
         </form>
       </div>
       <div className="row">
-        {books.map(b => (
+        {books?.map(b => (
           <div key={b.bookId} className="col-md-3">
             <BookCard book={b} />
           </div>
