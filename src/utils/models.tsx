@@ -5,6 +5,8 @@ export interface User {
   name?: string;
   email?: string;
   role: string;
+  readList: Array<Book>;
+  favouriteList: Array<Book>;
 }
 
 export interface Author {

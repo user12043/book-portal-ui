@@ -12,7 +12,9 @@ export const PATHS = {
     USER_MAN: ADMIN_PATH + "/user-management",
     BOOK_MAN: ADMIN_PATH + "/book-management",
     AUTHOR_MAN: ADMIN_PATH + "/author-management"
-  }
+  },
+  READLIST: "/read-list",
+  FAV_LIST: "/favourites"
 };
 
 export const ROLES = {

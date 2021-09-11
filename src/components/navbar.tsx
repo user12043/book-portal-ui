@@ -2,7 +2,7 @@ import React, { FC, useContext } from "react";
 import Logo from "img/logo.svg";
 import { AppContext } from "context";
 import { NavLink, useHistory } from "react-router-dom";
-import { PATHS } from "utils/constants";
+import { PATHS, ROLES } from "utils/constants";
 import Authorized from "./authorized";
 
 const NavBar: FC = () => {
@@ -39,8 +39,8 @@ const NavBar: FC = () => {
       </button>
 
       <div id="navBarContent" className="collapse navbar-collapse">
-        <Authorized>
-          <nav className="navbar-nav nav-pills mx-auto">
+        <nav className="navbar-nav nav-pills mx-auto">
+          <Authorized>
             <NavLink to={PATHS.ADMIN.USER_MAN} className="nav-link">
               User Management
             </NavLink>
@@ -50,7 +50,17 @@ const NavBar: FC = () => {
             <NavLink to={PATHS.ADMIN.BOOK_MAN} className="nav-link">
               Book Management
             </NavLink>
-          </nav>
+          </Authorized>
+          <Authorized roles={[ROLES.USER, ROLES.ADMIN]}>
+            <NavLink to={PATHS.READLIST} className="nav-link">
+              Read List
+            </NavLink>
+            <NavLink to={PATHS.FAV_LIST} className="nav-link">
+              Favourite List
+            </NavLink>
+          </Authorized>
+        </nav>
+        <Authorized roles={[ROLES.USER, ROLES.ADMIN]}>
           <div className="me-2">
             <span>{loggedUser?.name}</span>
             <button

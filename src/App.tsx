@@ -29,7 +29,7 @@ const App: FC = () => {
                 <Redirect to="/" />
               ) : (
                 <>
-                  <Route path="/" exact>
+                  <Route path={["/", PATHS.READLIST, PATHS.FAV_LIST]} exact>
                     <Home />
                   </Route>
                   <Route path={PATHS.ADMIN.USER_MAN}>

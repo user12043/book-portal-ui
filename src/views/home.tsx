@@ -1,11 +1,14 @@
 import BookCard from "components/book_card";
 import React, { FC, FormEventHandler, useEffect, useState } from "react";
-import { apiReq } from "utils";
+import { useLocation } from "react-router";
+import { apiReq, getLoggedUser } from "utils";
+import { PATHS } from "utils/constants";
 import { Book } from "utils/models";
 
 const Home: FC = () => {
   const [books, setBooks] = useState<Array<Book>>([]);
   const [searchKeyWord, setSearchKeyWord] = useState<string | null>(null);
+  const { pathname } = useLocation();
 
   const fetchBooks = () => apiReq("books").then(setBooks);
 
@@ -22,6 +25,13 @@ const Home: FC = () => {
       : fetchBooks();
   };
 
+  const booksToShow =
+    pathname === PATHS.READLIST
+      ? getLoggedUser()?.readList
+      : pathname === PATHS.FAV_LIST
+      ? getLoggedUser()?.favouriteList
+      : books;
+
   return (
     <section>
       <div className="row mb-4">
@@ -35,7 +45,7 @@ const Home: FC = () => {
         </form>
       </div>
       <div className="row">
-        {books?.map(b => (
+        {booksToShow?.map(b => (
           <div key={b.bookId} className="col-md-3">
             <BookCard book={b} />
           </div>
