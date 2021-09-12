@@ -7,13 +7,26 @@ import { Book } from "utils/models";
 
 const Home: FC = () => {
   const [books, setBooks] = useState<Array<Book>>([]);
+  const [readList, setReadList] = useState<Array<Book>>([]);
+  const [favList, setFavList] = useState<Array<Book>>([]);
   const [searchKeyWord, setSearchKeyWord] = useState<string | null>(null);
   const { pathname } = useLocation();
 
   const fetchBooks = () => apiReq("books").then(setBooks);
 
+  const fetchReadList = () =>
+    apiReq(`books/findReadListOfUser/${getLoggedUser()?.userId}`).then(
+      setReadList
+    );
+  const fetchFavList = () =>
+    apiReq(`books/findFavouriteListOfUser/${getLoggedUser()?.userId}`).then(
+      setFavList
+    );
+
   useEffect(() => {
     fetchBooks();
+    fetchReadList();
+    fetchFavList();
   }, []);
 
   const search: FormEventHandler<HTMLFormElement> = e => {
@@ -27,9 +40,9 @@ const Home: FC = () => {
 
   const booksToShow =
     pathname === PATHS.READLIST
-      ? getLoggedUser()?.readList
+      ? readList
       : pathname === PATHS.FAV_LIST
-      ? getLoggedUser()?.favouriteList
+      ? favList
       : books;
 
   return (
@@ -47,7 +60,15 @@ const Home: FC = () => {
       <div className="row">
         {booksToShow?.map(b => (
           <div key={b.bookId} className="col-md-3">
-            <BookCard book={b} />
+            <BookCard
+              book={b}
+              readList={readList}
+              favList={favList}
+              onChange={() => {
+                fetchReadList();
+                fetchFavList();
+              }}
+            />
           </div>
         ))}
       </div>
