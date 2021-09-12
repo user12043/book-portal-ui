@@ -45,7 +45,7 @@ const Login: FC = () => {
             name="email"
             aria-describedby="emailAddon"
             placeholder="user@example.com"
-            value={loginUser?.email}
+            value={loginUser?.email || ""}
             onChange={change}
             required
           />
@@ -61,7 +61,7 @@ const Login: FC = () => {
             name="password"
             aria-describedby="passwordAddon"
             placeholder="****"
-            value={loginUser?.password}
+            value={loginUser?.password || ""}
             onChange={change}
             required
           />
